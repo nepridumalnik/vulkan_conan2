@@ -40,7 +40,7 @@ class Recipe(ConanFile):
     def generate(self) -> None:
         deps = CMakeDeps(self)
         deps.generate()
-        tc = CMakeToolchain(self)
+        tc = CMakeToolchain(self, generator='Ninja')
         tc.user_presets_path = 'ConanPresets.json'
         tc.generate()
 
@@ -50,8 +50,8 @@ class Recipe(ConanFile):
         self.requires('glm/cci.20230113')
 
     def config_options(self) -> None:
-        self.options['glfw'].shared = True
-        self.options['glew'].shared = True
+        self.options['glfw'].shared = self.options.shared
+        self.options['glew'].shared = self.options.shared
 
     def imports(self) -> None:
         self.copy('*.dll', dst='bin', src='bin')

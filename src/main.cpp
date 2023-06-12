@@ -8,6 +8,7 @@
 
 #include <stdexcept>
 #include <iostream>
+#include <memory>
 
 int main(int argc, char const *argv[])
 {
@@ -19,6 +20,17 @@ int main(int argc, char const *argv[])
 
     try
     {
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
+        std::shared_ptr<GLFWwindow> window =
+            std::shared_ptr<GLFWwindow>(glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr), glfwDestroyWindow);
+
+        uint32_t extensionsCount = 0;
+        vkEnumerateInstanceExtensionProperties(nullptr, &extensionsCount, nullptr);
+
+        while (!glfwWindowShouldClose(window.get()))
+        {
+            glfwPollEvents();
+        }
     }
     catch (const std::exception &e)
     {
